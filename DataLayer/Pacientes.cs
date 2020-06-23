@@ -6,6 +6,7 @@ using System.IO;
 
 namespace DataLayer
 {
+    [Serializable]
     public class Pacientes
     {
         
@@ -346,38 +347,62 @@ namespace DataLayer
         /// Guarda informaçoes de pacientes num ficheiro txt
         /// </summary>
         /// <returns></returns>
-        public static bool SavePacientes()
+        public static bool SavePacientes(bool append = false)
         {
-
-
-            using (TextWriter tw = new StreamWriter("PacienteFile.txt")) //Works
+            try
             {
-                foreach (Paciente p in todosPacientes)
+                using(Stream stream = File.Open("C:/Users/Luís Martins/Documents/GitHub/16980-17015-LP2/DataLayer/todos_pacientes.dat", append ? FileMode.Append : FileMode.Create))
                 {
-                    tw.WriteLine(p.ToString());
-                    return true;
+                    var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                    binaryFormatter.Serialize(stream, todosPacientes);
                 }
-                tw.Close();
+                return true;
             }
-            return false;
+            catch(Exception ex)
+            {
+                
+                return false;
+            }
+
+
         }
 
 
-        public static bool LoadPacientes() //Doesn't work
+        public static void LoadPacientes() //Doesn't work
         {
 
+            string nomeFicheiro = "todos_pacientes.dat";
+            Stream stream = null;
 
-            using (StreamReader sr = new StreamReader("PacienteFile.txt"))
+            if (File.Exists("C:/Users/Luís Martins/Documents/GitHub/16980-17015-LP2/DataLayer/todos_pacientes.dat"))
             {
-                while (sr.Peek() >= 0)
+
+                try
                 {
-                    Console.Write((char)sr.Read());
-                    return true;
+                    stream = File.Open("C:/Users/Luís Martins/Documents/GitHub/16980-17015-LP2/DataLayer/todos_pacientes.dat", FileMode.Open);
+
+
+                    var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                    todosPacientes = (List<Paciente>)binaryFormatter.Deserialize(stream);
+
                 }
+                finally
+                {
+                    if (stream != null)
+                    {
+                        stream.Close();
+                    }
+                }
+
+
+            }
+            else
+            {
+                Console.WriteLine("Não foi carregado");
+                return;
             }
 
 
-            return false;
         }
     }
 }

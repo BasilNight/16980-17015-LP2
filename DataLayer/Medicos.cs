@@ -13,6 +13,7 @@ using BusinessObjects;
 
 namespace DataLayer
 {
+    [Serializable]
     public class Medicos
     {
         private static List<Medico> medicos;
@@ -133,20 +134,60 @@ namespace DataLayer
         /// Guarda informaçoes de medicos num ficheiro txt
         /// </summary>
         /// <returns></returns>
-        public static bool SaveMedicos()
+        public static bool SaveMedicos(bool append = false)
         {
 
-
-            using (TextWriter tw = new StreamWriter("MedicoFile.txt")) //Works
+            try
             {
-                foreach (Medico m in medicos)
+                using (Stream stream = File.Open("C:/Users/Luís Martins/Documents/GitHub/16980-17015-LP2/DataLayer/todos_medicos.dat", append ? FileMode.Append : FileMode.Create))
                 {
-                    tw.WriteLine(m.ToString());
-                    return true;
+                    var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                    binaryFormatter.Serialize(stream, medicos);
                 }
-                tw.Close();
+                return true;
             }
-            return false;
+            catch (Exception ex)
+            {
+                
+                return false;
+            }
+
         }
+
+        public static bool LoadMedicos()
+        {
+
+            string nomeFicheiro = "todos_pacientes.dat";
+            Stream stream = null;
+
+            if (File.Exists("C:/Users/Luís Martins/Documents/GitHub/16980-17015-LP2/DataLayer/todos_medicos.dat"))
+            {
+
+                try
+                {
+                    stream = File.Open("C:/Users/Luís Martins/Documents/GitHub/16980-17015-LP2/DataLayer/todos_medicos.dat", FileMode.Open);
+
+
+                    var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                    medicos = (List<Medico>)binaryFormatter.Deserialize(stream);
+
+                }
+                finally
+                {
+                    if (stream != null)
+                    {
+                        stream.Close();
+                        
+                    }
+                }
+                return true;
+            }
+            else
+            {
+                
+                return false;
+            }
+        }
+
     }
 }

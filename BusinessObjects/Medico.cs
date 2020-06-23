@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 
 namespace BusinessObjects
 {
@@ -6,7 +7,7 @@ namespace BusinessObjects
     /// <summary>
     /// Classe Medico - pode ser atribuido a varios pacientes dependendo da condiçao do mesmo (...)
     /// </summary>
-
+    [Serializable]
     public class Medico : Pessoa
     {
         #region Atributos

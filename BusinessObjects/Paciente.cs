@@ -18,6 +18,7 @@ namespace BusinessObjects
     /// <summary>
     /// Descreve paciente do hospital
     /// </summary>
+    [Serializable]
     public class Paciente : Pessoa
     {
         #region Atributos

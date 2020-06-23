@@ -111,12 +111,29 @@ namespace BusinessRuleLayer
         }
 
         /// <summary>
+        /// Carrega dados de pacientes (Melhorar)
+        /// </summary>
+        public static void CarregarPacientes()
+        {
+            Pacientes.LoadPacientes();
+        }
+
+        /// <summary>
         /// Guarda dados de medicos no ficheiro "MedicoFile.txt"
         /// </summary>
         /// <returns></returns>
         public static bool GuardarMedicos()
         {
             return Medicos.SaveMedicos();
+        }
+
+        /// <summary>
+        /// Carrega dados de medicos guardados no ficheiro todos_medicos.dat
+        /// </summary>
+        /// <returns></returns>
+        public static bool CarregarMedicos()
+        {
+            return Medicos.LoadMedicos();
         }
 
         /// <summary>

@@ -14,6 +14,7 @@ namespace BusinessObjects
     /// <summary>
     /// Descreve uma pessoa básica
     /// </summary>
+    [Serializable]
     public class Pessoa
     {
         #region Atributos

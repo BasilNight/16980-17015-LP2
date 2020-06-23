@@ -59,7 +59,7 @@ namespace Main
                         Console.WriteLine("2) Remover Paciente");
                         Console.WriteLine("3) Listar Pacientes");
                         Console.WriteLine("4) Guardar");
-                        Console.WriteLine("5) Carregar Progresso");
+                        Console.WriteLine("5) Carregar Dados");
 
                         Console.WriteLine("0) Voltar");
                         option = Console.ReadKey();
@@ -148,7 +148,7 @@ namespace Main
                             case ConsoleKey.D3:
                             case ConsoleKey.NumPad3:
 
-                                Console.WriteLine("--------- [LISTAR PACIENTES] ---------");
+                                Console.WriteLine("--------- [LISTAR PACIENTES] ---------"); // Reestruturar 
                                 
                                 Rules.ListarPacientes();
                                 Console.ReadKey();
@@ -166,7 +166,9 @@ namespace Main
 
                             case ConsoleKey.D5:
                             case ConsoleKey.NumPad5:
-                                //Rules.LoadAll();
+                                Console.WriteLine("--------- [CARREGAR] ---------");  //Acabar 
+                                Rules.CarregarPacientes();
+                                Console.ReadKey();
                                 break;
 
                             case ConsoleKey.D0:
@@ -188,7 +190,7 @@ namespace Main
                         Console.WriteLine("3) Listar Medicos");
                         Console.WriteLine("4) Atribuir Paciente a Medico");
                         Console.WriteLine("5) Guardar");
-                        Console.WriteLine("6) Carregar Progresso");
+                        Console.WriteLine("6) Carregar Dados");
                         Console.WriteLine("0) Voltar");
                         option = Console.ReadKey();
 
@@ -287,6 +289,14 @@ namespace Main
                                 else { Console.WriteLine("Ficheiro não foi Guardado..."); Console.ReadKey(); }
                                 break;
 
+                            case ConsoleKey.D6:
+                            case ConsoleKey.NumPad6:
+
+                                Rules.CarregarMedicos();
+                                Console.ReadKey();
+
+
+                                break;
                             case ConsoleKey.D0:
                             case ConsoleKey.NumPad0:
                                 
