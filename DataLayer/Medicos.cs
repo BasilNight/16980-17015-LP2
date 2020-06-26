@@ -146,6 +146,8 @@ namespace DataLayer
                 Stream stream = File.Open("C:/Users/Luís Martins/Documents/GitHub/16980-17015-LP2/DataLayer/todos_medicos.dat", FileMode.Create, FileAccess.ReadWrite);
                 var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
                 binaryFormatter.Serialize(stream, medicos);
+                stream.Flush();
+                stream.Close();
                 return true;
             }
             catch (IOException ex)

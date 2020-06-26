@@ -293,6 +293,8 @@ namespace DataLayer
                 Stream stream = File.Open("C:/Users/Luís Martins/Documents/GitHub/16980-17015-LP2/DataLayer/todos_pacientes.dat", FileMode.Create, FileAccess.ReadWrite);
                 var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
                 binaryFormatter.Serialize(stream, todosPacientes);
+                stream.Flush();
+                stream.Close();
 
                 return true;
             }
