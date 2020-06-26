@@ -19,7 +19,7 @@ namespace BusinessObjects
     /// Descreve paciente do hospital
     /// </summary>
     [Serializable]
-    public class Paciente : Pessoa
+    public class Paciente: Pessoa, IComparable<Paciente>
     {
         #region Atributos
         Condicao condicao;
@@ -111,6 +111,26 @@ namespace BusinessObjects
         //}
 
         #endregion
+
+        /// <summary>
+        /// Compara condiçao de um paciente com outro
+        /// </summary>
+        /// <param name="outro"></param>
+        /// <returns></returns>
+        public int CompareTo(Paciente outro)
+        {
+            if (this.Condicao > outro.Condicao)
+            {
+                return 1;
+            }
+            else if (this.Condicao < outro.Condicao)
+            {
+                return -1;
+            }
+            else return 0;
+
+        }
+
 
 
         #region Overrides

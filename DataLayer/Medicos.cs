@@ -108,11 +108,15 @@ namespace DataLayer
         /// <returns></returns>
         public static bool ListarTodosMedicos()
         {
-            foreach (Medico medico in medicos)
+            if (medicos.Count != 0)
             {
-                Console.WriteLine(medico.ToString());
+                foreach (Medico medico in medicos)
+                {
+                    Console.WriteLine(medico.ToString());
+                }
+                return true;
             }
-            return true;
+            else return false;
         }
 
         /// <summary>
@@ -131,7 +135,7 @@ namespace DataLayer
         }
 
         /// <summary>
-        /// Guarda informaçoes de medicos num ficheiro txt
+        /// Guarda dados de medicos no ficheiro "todos_medicos.dat"
         /// </summary>
         /// <returns></returns>
         public static bool SaveMedicos(bool append = false)
@@ -139,25 +143,24 @@ namespace DataLayer
 
             try
             {
-                using (Stream stream = File.Open("C:/Users/Luís Martins/Documents/GitHub/16980-17015-LP2/DataLayer/todos_medicos.dat", append ? FileMode.Append : FileMode.Create))
-                {
-                    var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                    binaryFormatter.Serialize(stream, medicos);
-                }
+                Stream stream = File.Open("C:/Users/Luís Martins/Documents/GitHub/16980-17015-LP2/DataLayer/todos_medicos.dat", FileMode.Create, FileAccess.ReadWrite);
+                var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                binaryFormatter.Serialize(stream, medicos);
                 return true;
             }
-            catch (Exception ex)
+            catch (IOException ex)
             {
-                
-                return false;
+                throw new IOException(ex.Message);
             }
 
         }
 
+        /// <summary>
+        /// Carrega dados de medicos guardados no ficheiro "todos_medicos.dat"
+        /// </summary>
+        /// <returns></returns>
         public static bool LoadMedicos()
-        {
-
-            string nomeFicheiro = "todos_pacientes.dat";
+        {    
             Stream stream = null;
 
             if (File.Exists("C:/Users/Luís Martins/Documents/GitHub/16980-17015-LP2/DataLayer/todos_medicos.dat"))
@@ -166,28 +169,26 @@ namespace DataLayer
                 try
                 {
                     stream = File.Open("C:/Users/Luís Martins/Documents/GitHub/16980-17015-LP2/DataLayer/todos_medicos.dat", FileMode.Open);
-
-
                     var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
                     medicos = (List<Medico>)binaryFormatter.Deserialize(stream);
-
+                }
+                catch(IOException ex)
+                {
+                    throw  new IOException(ex.Message);
                 }
                 finally
                 {
                     if (stream != null)
                     {
                         stream.Close();
-                        
                     }
                 }
                 return true;
             }
             else
-            {
-                
+            { 
                 return false;
             }
         }
-
     }
 }

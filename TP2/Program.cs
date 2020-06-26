@@ -11,6 +11,7 @@
 
 using BusinessObjects;
 using BusinessRuleLayer;
+using DataLayer;
 using System;
 
 
@@ -31,8 +32,7 @@ namespace Main
             int idade, nif;
             char sexo, condicao;
             
-            Condicao cond = Condicao.NULL;
-            Sexo sex = Sexo.NULL;
+            
             bool exit = true;
             
             #endregion
@@ -41,6 +41,8 @@ namespace Main
             #region MENU
             while (exit != false)
             {
+                Condicao cond = Condicao.NULL;
+                Sexo sex = Sexo.NULL;
                 Console.Clear();
                 Console.WriteLine("--------- [MENU PRINCIPAL] ---------");
                 Console.WriteLine("1) Gerir Pacientes");
@@ -60,6 +62,7 @@ namespace Main
                         Console.WriteLine("3) Listar Pacientes");
                         Console.WriteLine("4) Guardar");
                         Console.WriteLine("5) Carregar Dados");
+                        Console.WriteLine("6) Listar Pacientes por Condiçao");
 
                         Console.WriteLine("0) Voltar");
                         option = Console.ReadKey();
@@ -74,7 +77,7 @@ namespace Main
                                 Console.WriteLine("Insire a idade: ");
                                 idade = int.Parse(Console.ReadLine());
                                 Console.WriteLine("Insire a altura: ");
-                                altura = int.Parse(Console.ReadLine());
+                                altura = float.Parse(Console.ReadLine());
 
                                 Console.WriteLine("Insire o peso: ");
                                 peso = float.Parse(Console.ReadLine());
@@ -148,10 +151,14 @@ namespace Main
                             case ConsoleKey.D3:
                             case ConsoleKey.NumPad3:
 
-                                Console.WriteLine("--------- [LISTAR PACIENTES] ---------"); // Reestruturar 
-                                
-                                Rules.ListarPacientes();
-                                Console.ReadKey();
+                                Console.WriteLine("--------- [LISTAR PACIENTES] ---------");
+
+                                if (Rules.ListarPacientes() == true) { }
+                                else if (Rules.ListarPacientes() == false)
+                                {
+                                    Console.WriteLine("Não foi encontrado nenhum paciente");
+                                }
+                                    Console.ReadKey();
 
                                 break;
                             case ConsoleKey.D4:
@@ -166,17 +173,29 @@ namespace Main
 
                             case ConsoleKey.D5:
                             case ConsoleKey.NumPad5:
-                                Console.WriteLine("--------- [CARREGAR] ---------");  //Acabar 
-                                Rules.CarregarPacientes();
+                                Console.WriteLine("--------- [CARREGAR] ---------");  
+
+                                if(Rules.CarregarPacientes() == true)
+                                {
+                                    Console.WriteLine("Ficheiro foi carregado com sucesso");
+                                    Console.ReadKey();
+                                }
+                                else { Console.WriteLine("Ficheiro não foi Carregado..."); Console.ReadKey(); }
+                    
+                                break;
+
+                            case ConsoleKey.D6:
+                            case ConsoleKey.NumPad6:
+                                Console.WriteLine("--------- [LISTAR POR CONDIÇAO] ---------");
+                                Pacientes.ListPacientesPorCondicao();
+
                                 Console.ReadKey();
                                 break;
 
                             case ConsoleKey.D0:
                             case ConsoleKey.NumPad0:
                                 break;
-
                         }
-
                         break;
                     #endregion
 
@@ -259,7 +278,11 @@ namespace Main
                             case ConsoleKey.NumPad3:
 
                                 Console.WriteLine("--------- [LISTAR MEDICOS] ---------");
-                                Rules.ListarMedicos();
+                                if (Rules.ListarMedicos() == true) { }
+                                else if (Rules.ListarMedicos() == false)
+                                {
+                                    Console.WriteLine("Não foi encontrado nenhum medico");
+                                }
                                 Console.ReadKey();
                                 break;
                             case ConsoleKey.D4:
@@ -291,10 +314,14 @@ namespace Main
 
                             case ConsoleKey.D6:
                             case ConsoleKey.NumPad6:
+                                Console.WriteLine("--------- [CARREGAR] ---------");
 
-                                Rules.CarregarMedicos();
-                                Console.ReadKey();
-
+                                if (Rules.CarregarMedicos() == true)
+                                {
+                                    Console.WriteLine("Ficheiro foi carregado com sucesso");
+                                    Console.ReadKey();
+                                }
+                                else { Console.WriteLine("Ficheiro não foi Carregado..."); Console.ReadKey(); }
 
                                 break;
                             case ConsoleKey.D0:

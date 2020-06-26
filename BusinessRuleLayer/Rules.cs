@@ -102,7 +102,7 @@ namespace BusinessRuleLayer
         }
 
         /// <summary>
-        /// Guarda dados de pacientes no ficheiro "PacienteFile.txt"
+        /// Guarda dados de pacientes no ficheiro "todos_pacientes.dat"
         /// </summary>
         /// <returns></returns>
         public static bool GuardarPacientes()
@@ -111,11 +111,11 @@ namespace BusinessRuleLayer
         }
 
         /// <summary>
-        /// Carrega dados de pacientes (Melhorar)
+        /// Carrega dados de pacientes guardados no ficheiro "todos_pacientes.dat"
         /// </summary>
-        public static void CarregarPacientes()
+        public static bool CarregarPacientes()
         {
-            Pacientes.LoadPacientes();
+            return Pacientes.LoadPacientes();
         }
 
         /// <summary>

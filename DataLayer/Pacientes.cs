@@ -11,7 +11,7 @@ namespace DataLayer
     {
         
         private static List<Paciente> todosPacientes;
-        private static List<Paciente> pacientesUrgentes;           // Lista de pacientes urgentes (fazer mais listas para outros pacientes?/ Fazer classe especifica para isto?)
+        private static List<Paciente> pacientesUrgentes;           
         private static List<Paciente> pacientesCriticos;
         private static List<Paciente> pacientesEstaveis;
 
@@ -26,42 +26,12 @@ namespace DataLayer
             pacientesEstaveis = new List<Paciente>();
         }
 
-
-
-        //Codigo redundante
         /// <summary>
         /// Adiciona um paciente
         /// </summary>
         /// <param name="paciente"></param>
         /// <returns></returns>
-        //public static bool AddPaciente(Paciente paciente)
-        //{
-
-
-        //    pacientes.Add(paciente);
-        //    if (paciente.Condicao == Condicao.URGENTE)
-        //    {
-        //        pacientesUrgentes.Add(paciente);
-        //    }
-        //    else if (paciente.Condicao == Condicao.CRITICO)
-        //    {
-        //        pacientesMaus.Add(paciente);
-        //    }
-        //    else if (paciente.Condicao == Condicao.ESTAVEL)
-        //    {
-        //        pacientesNormais.Add(paciente);
-        //    }
-        //    return true;
-
-
-        //}
-
-        /// <summary>
-        /// Adiciona um paciente
-        /// </summary>
-        /// <param name="paciente"></param>
-        /// <returns></returns>
-        public static bool AddPaciente(Paciente paciente) // Works
+        public static bool AddPaciente(Paciente paciente) 
         {
             if (ExistePaciente(paciente.Nome) == false)
             {
@@ -91,11 +61,15 @@ namespace DataLayer
         /// <returns></returns>
         public static bool ListarTodosPacientes()
         {
-            foreach (Paciente paciente in todosPacientes)
+            if (todosPacientes.Count != 0)
             {
-                Console.WriteLine(paciente.ToString());
-            }   
-            return true;
+                foreach (Paciente paciente in todosPacientes)
+                {
+                    Console.WriteLine(paciente.ToString());
+                }
+                return true;
+            }
+            else return false;
         }
 
         /// <summary>
@@ -137,53 +111,6 @@ namespace DataLayer
             return true;
         }
 
-
-        //Codigo redundante...
-        ///// <summary>
-        ///// Lista todos os Pacientes com condiçao urgente
-        ///// </summary>
-        ///// <returns></returns>
-        //public static bool ListarPacientesUrgentes()
-        //{
-
-        //    foreach (Paciente paciente in pacientesUrgentes)
-        //    {
-        //        Console.WriteLine(paciente.ToString());
-        //    }
-
-        //    return true;
-        //}
-
-        ///// <summary>
-        ///// Lista todos os Pacientes com condiçao má
-        ///// </summary>
-        ///// <returns></returns>
-        //public static bool ListarPacientesMaus()
-        //{
-
-        //    foreach (Paciente paciente in pacientesMaus)
-        //    {
-        //        Console.WriteLine(paciente.ToString());
-        //    }
-
-        //    return true;
-        //}
-
-        ///// <summary>
-        ///// Lista todos os Pacientes com condiçao normal
-        ///// </summary>
-        ///// <returns></returns>
-        //public static bool ListarPacientesNormais()
-        //{
-
-        //    foreach (Paciente paciente in pacientesNormais)
-        //    {
-        //        Console.WriteLine(paciente.ToString());
-        //    }
-
-        //    return true;
-        //} Codigo redundante  // Codigo redundante
-
         #region METODOS OBTER POSIÇÃO
 
         /// <summary>
@@ -191,7 +118,7 @@ namespace DataLayer
         /// </summary>
         /// <param name="nomPaciente"></param>
         /// <returns></returns>
-        public static int ObterPosPaciente(string nomPaciente) // Works
+        public static int ObterPosPaciente(string nomPaciente) 
         {
             for (int i = 0; i < todosPacientes.Count; i++)
             {
@@ -206,7 +133,7 @@ namespace DataLayer
         /// </summary>
         /// <param name="nomPaciente"></param>
         /// <returns></returns>
-        public static int ObterPosPacienteUrgente(string nomPaciente) // Works
+        public static int ObterPosPacienteUrgente(string nomPaciente) 
         {
             for (int i = 0; i < pacientesUrgentes.Count; i++)
             {
@@ -221,7 +148,7 @@ namespace DataLayer
         /// </summary>
         /// <param name="nomPaciente"></param>
         /// <returns></returns>
-        public static int ObterPosPacienteCritico(string nomPaciente) // Works
+        public static int ObterPosPacienteCritico(string nomPaciente) 
         {
             for (int i = 0; i < pacientesCriticos.Count; i++)
             {
@@ -236,7 +163,7 @@ namespace DataLayer
         /// </summary>
         /// <param name="nomPaciente"></param>
         /// <returns></returns>
-        public static int ObterPosPacienteEstavel(string nomPaciente) // Works
+        public static int ObterPosPacienteEstavel(string nomPaciente) 
         {
             for (int i = 0; i < pacientesEstaveis.Count; i++)
             {
@@ -252,7 +179,7 @@ namespace DataLayer
         /// </summary>
         /// <param name="nomePaciente"></param>
         /// <returns></returns>
-        public static bool RemovePaciente(string nomePaciente)  // Works
+        public static bool RemovePaciente(string nomePaciente) 
         {
             int pos = ObterPosPaciente(nomePaciente);
             if (pos != -1)
@@ -344,34 +271,45 @@ namespace DataLayer
         }
 
         /// <summary>
-        /// Guarda informaçoes de pacientes num ficheiro txt
+        /// Lista Pacientes em ordem da Condição (Urgente) 
+        /// </summary>
+        /// <returns></returns>
+        public static bool ListPacientesPorCondicao()
+        {
+
+            todosPacientes.Sort();
+            return ListarTodosPacientes();
+        }
+
+        /// <summary>
+        /// Guarda dados de pacientes no ficheiro "todos_pacientes.dat"
         /// </summary>
         /// <returns></returns>
         public static bool SavePacientes(bool append = false)
         {
             try
             {
-                using(Stream stream = File.Open("C:/Users/Luís Martins/Documents/GitHub/16980-17015-LP2/DataLayer/todos_pacientes.dat", append ? FileMode.Append : FileMode.Create))
-                {
-                    var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                    binaryFormatter.Serialize(stream, todosPacientes);
-                }
+
+                Stream stream = File.Open("C:/Users/Luís Martins/Documents/GitHub/16980-17015-LP2/DataLayer/todos_pacientes.dat", FileMode.Create, FileAccess.ReadWrite);
+                var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                binaryFormatter.Serialize(stream, todosPacientes);
+
                 return true;
             }
-            catch(Exception ex)
+            catch (IOException e)
             {
-                
-                return false;
+                throw new IOException(e.Message);
             }
-
-
         }
 
-
-        public static void LoadPacientes() //Doesn't work
+        /// <summary>
+        /// Carrega dados de pacientes do ficheiro "todos_pacientes.dat"
+        /// </summary>
+        /// <returns></returns>
+        public static bool LoadPacientes() 
         {
 
-            string nomeFicheiro = "todos_pacientes.dat";
+            
             Stream stream = null;
 
             if (File.Exists("C:/Users/Luís Martins/Documents/GitHub/16980-17015-LP2/DataLayer/todos_pacientes.dat"))
@@ -380,29 +318,27 @@ namespace DataLayer
                 try
                 {
                     stream = File.Open("C:/Users/Luís Martins/Documents/GitHub/16980-17015-LP2/DataLayer/todos_pacientes.dat", FileMode.Open);
-
-
                     var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
                     todosPacientes = (List<Paciente>)binaryFormatter.Deserialize(stream);
 
+                }
+                catch(IOException ex)
+                {
+                    throw new IOException(ex.Message);  
                 }
                 finally
                 {
                     if (stream != null)
                     {
-                        stream.Close();
+                        stream.Close();         
                     }
                 }
-
-
+                return true;
             }
             else
-            {
-                Console.WriteLine("Não foi carregado");
-                return;
+            {     
+                return false;
             }
-
-
         }
     }
 }
